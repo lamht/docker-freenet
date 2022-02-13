@@ -1,5 +1,8 @@
-**Note:** work in progress
+> :warning: **Status:** Archived
+> ================================
+> As I do not run a freenet server anymore, work on this project is suspended.
 
+***
 This is an **unofficial** docker image for Freenet.
 
 The binaries used are from the official Freenet releases. You can verify that
