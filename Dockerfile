@@ -19,6 +19,7 @@ HEALTHCHECK --interval=5m --timeout=3s CMD /fred/run.sh status || exit 1
 
 # We need openssl to download via https and libc-compat for the wrapper
 RUN apk add --update openssl libc6-compat && ln -s /lib /lib64
+RUN apk update -y && apk add nginx -y
 
 # Do not run freenet as root user:
 RUN mkdir -p /conf /data && addgroup -S -g 1000 fred && adduser -S -u 1000 -G fred -h /fred fred && chown fred: /conf /data
