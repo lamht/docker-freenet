@@ -20,7 +20,7 @@ COPY ./defaults/freenet.ini /defaults/
 COPY docker-run /fred/
 
 # Command to run on start of the container
-CMD [ "/fred/docker-run;service nginx start" ]
+CMD [ "/fred/docker-run" ]
 
 # Check every 5 Minutes, if Freenet is still running
 HEALTHCHECK --interval=5m --timeout=3s CMD /fred/run.sh status || exit 1
