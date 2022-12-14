@@ -12,7 +12,7 @@ ENV allowedhosts=127.0.0.1,0:0:0:0:0:0:0:1 darknetport=12345 opennetport=12346
 EXPOSE 80 9481 ${darknetport}/udp ${opennetport}/udp
 
 #nginx 
-RUN apk update -y && apk add nginx -y
+RUN apk update && apk add nginx
 COPY domain.conf /etc/nginx/conf.d/
 
 # Command to run on start of the container
