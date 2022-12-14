@@ -1,4 +1,4 @@
-FROM java:openjdk-8-jre-alpine
+FROM openjdk:16-alpine
 
 LABEL maintainer="Tobias Vollmer <info+docker@tvollmer.de>"
 
