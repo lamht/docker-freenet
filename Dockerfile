@@ -15,6 +15,10 @@ EXPOSE 80 9481 ${darknetport}/udp ${opennetport}/udp
 RUN apk update && apk add nginx
 COPY domain.conf /etc/nginx/conf.d/
 
+##freenet
+COPY ./defaults/freenet.ini /defaults/
+COPY docker-run /fred/
+
 # Command to run on start of the container
 CMD [ "/fred/docker-run;service nginx start" ]
 
@@ -31,8 +35,6 @@ USER fred
 WORKDIR /fred
 VOLUME ["/conf", "/data"]
 
-COPY ./defaults/freenet.ini /defaults/
-COPY docker-run /fred/
 
 # Get the latest freenet build or use supplied version
 RUN build=$(test -n "${freenet_build}" && echo ${freenet_build} \
