@@ -9,17 +9,21 @@ ARG freenet_build
 ENV allowedhosts=127.0.0.1,0:0:0:0:0:0:0:1 darknetport=12345 opennetport=12346
 
 # Interfaces:
-EXPOSE 8888 9481 ${darknetport}/udp ${opennetport}/udp
+EXPOSE 80 9481 ${darknetport}/udp ${opennetport}/udp
+
+#nginx 
+RUN apk update -y && apk add nginx -y
+COPY domain.conf /etc/nginx/conf.d/
 
 # Command to run on start of the container
-CMD [ "/fred/docker-run" ]
+CMD [ "/fred/docker-run;service nginx start" ]
 
 # Check every 5 Minutes, if Freenet is still running
 HEALTHCHECK --interval=5m --timeout=3s CMD /fred/run.sh status || exit 1
 
 # We need openssl to download via https and libc-compat for the wrapper
 RUN apk add --update openssl libc6-compat && ln -s /lib /lib64
-RUN apk update -y && apk add nginx -y
+
 
 # Do not run freenet as root user:
 RUN mkdir -p /conf /data && addgroup -S -g 1000 fred && adduser -S -u 1000 -G fred -h /fred fred && chown fred: /conf /data

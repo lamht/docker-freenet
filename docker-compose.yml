@@ -2,10 +2,10 @@ version: '2'
 services:
   freenet:
     container_name: freenet
-    image: 5nafu/freenet
+    image: thanhlam00290/freenet
     network_mode: "host"
     ports:
-      - "127.0.0.1:8888:8888"
+      - "127.0.0.1:80:8888"
       - "127.0.0.1:9481:9481"
       - "12345:12345/udp"
       - "12346:12346/udp"
