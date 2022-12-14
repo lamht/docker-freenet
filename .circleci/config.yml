@@ -1,0 +1,51 @@
+version: 2.1
+
+commands:
+  destroy-environment:
+    description: Destroy EKS.    
+    steps:
+      - run:
+          name: Destroy environments
+          # when: on_fail
+          command: |
+            eksctl delete cluster --name eksctl-demo --region=us-east-1
+
+jobs:
+  lint:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: Install hadolint
+          command: |
+            sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
+            sudo chmod +x /bin/hadolint
+      - run:
+          name: Lint
+          command: |
+            make lint
+  
+  build:
+    docker:
+      - image: docker:latest
+    steps:
+      - checkout 
+      - setup_remote_docker     
+      - run:
+          name: Build react
+          command: |
+            DOCKER_PATH="thanhlam00290/freenet"
+            docker --version
+            docker build -t $DOCKER_PATH .
+            docker login -p ${DOCKER_PASSWORD} -u ${DOCKER_USERNAME}
+            docker push $DOCKER_PATH
+            docker tag $DOCKER_PATH $DOCKER_PATH:0.0.${CIRCLE_BUILD_NUM}
+            docker push $DOCKER_PATH:0.0.${CIRCLE_BUILD_NUM}
+  
+
+  
+workflows:
+  default:
+    jobs:
+      - build      
