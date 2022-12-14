@@ -41,6 +41,7 @@ jobs:
             docker login -p ${DOCKER_PASSWORD} -u ${DOCKER_USERNAME}
             docker push $DOCKER_PATH
             docker tag $DOCKER_PATH $DOCKER_PATH:0.0.${CIRCLE_BUILD_NUM}
+            docker push $DOCKER_PATH:0.0.${CIRCLE_BUILD_NUM}
   
 
   
