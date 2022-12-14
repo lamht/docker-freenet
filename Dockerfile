@@ -1,4 +1,4 @@
-FROM openjdk:8u212-jre-alpine
+FROM openjdk:11.0.16-jre-slim-bullseye
 
 LABEL maintainer="Tobias Vollmer <info+docker@tvollmer.de>"
 
@@ -12,12 +12,10 @@ ENV allowedhosts=127.0.0.1,0:0:0:0:0:0:0:1 darknetport=12345 opennetport=12346
 EXPOSE 80 9481 ${darknetport}/udp ${opennetport}/udp
 
 #nginx 
-RUN apk update && apk add nginx
-COPY domain.conf /etc/nginx/conf.d/
-
-##freenet
-COPY ./defaults/freenet.ini /defaults/
-COPY docker-run /fred/
+RUN apt update && apt install -y nginx
+RUN mkdir -p /run/nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+#RUN service nginx start
 
 # Command to run on start of the container
 CMD [ "/fred/docker-run" ]
@@ -26,15 +24,21 @@ CMD [ "/fred/docker-run" ]
 HEALTHCHECK --interval=5m --timeout=3s CMD /fred/run.sh status || exit 1
 
 # We need openssl to download via https and libc-compat for the wrapper
-RUN apk add --update openssl libc6-compat && ln -s /lib /lib64
+RUN apt install -y openssl wget
+#libc6-compat && ln -s /lib /lib64
 
 
 # Do not run freenet as root user:
-RUN mkdir -p /conf /data && addgroup -S -g 1000 fred && adduser -S -u 1000 -G fred -h /fred fred && chown fred: /conf /data
+RUN mkdir -p /conf /data && addgroup --gid 1000 fred && adduser --gid 1000 --home /fred fred && chown fred: /conf /data
+
+COPY ./defaults/freenet.ini /defaults/
+COPY docker-run /fred/
+
+RUN chown fred /fred/docker-run && chmod +x /fred/docker-run
+
 USER fred
 WORKDIR /fred
 VOLUME ["/conf", "/data"]
-
 
 # Get the latest freenet build or use supplied version
 RUN build=$(test -n "${freenet_build}" && echo ${freenet_build} \
