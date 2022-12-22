@@ -12,14 +12,12 @@ ENV allowedhosts=127.0.0.1,0:0:0:0:0:0:0:1 darknetport=12345 opennetport=12346
 EXPOSE 80 9481 ${darknetport}/udp ${opennetport}/udp
 
 #nginx 
-RUN apt update && apt install -y nginx cron
+RUN apt update && apt install -y nginx nano net-tools
 RUN mkdir -p /run/nginx
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY nginx.sh /etc/nginx/nginx.sh
-RUN chmod +x /etc/nginx/nginx.sh && echo "@reboot sh /etc/nginx/nginx.sh" > /etc/crontab
 
 # Command to run on start of the container
-CMD ["/fred/docker-run" ]
+CMD ["/bin/bash", "-c", "service nginx start;/fred/docker-run" ]
 
 # Check every 5 Minutes, if Freenet is still running
 HEALTHCHECK --interval=5m --timeout=3s CMD /fred/run.sh status || exit 1
@@ -56,3 +54,5 @@ RUN wget -O /tmp/new_installer.jar $(grep url /fred/buildinfo.json |cut -d" " -f
     && echo "Build successful" \
     && echo "----------------" \
     && cat /fred/buildinfo.json
+
+USER root

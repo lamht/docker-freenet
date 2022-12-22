@@ -21,7 +21,9 @@ if [ ! -f /data/seednodes.fref  ]; then
     cp /fred/seednodes.fref /data/
 fi
 
+su - fred
 cd /fred
+echo "hello"
 
-./run.sh console &
+su -c './run.sh console' fred &
 wait
