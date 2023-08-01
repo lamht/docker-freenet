@@ -45,6 +45,8 @@ RUN build=$(test -n "${freenet_build}" && echo ${freenet_build} \
     && echo "Building:" \
     && cat buildinfo.json
 
+ENV FREENET_VERSION=$build
+
 # Download and install freenet in the given version
 RUN wget -O /tmp/new_installer.jar $(grep url /fred/buildinfo.json |cut -d" " -f2) \
     && echo "INSTALL_PATH=/fred/" >/tmp/install_options.conf \
