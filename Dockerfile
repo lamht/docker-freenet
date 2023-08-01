@@ -1,4 +1,4 @@
-FROM openjdk:11.0.16-jre-slim-bullseye
+FROM openjdk:22-slim-bullseye
 
 LABEL maintainer="Tobias Vollmer <info+docker@tvollmer.de>"
 
