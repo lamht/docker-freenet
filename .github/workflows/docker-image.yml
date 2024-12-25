@@ -28,5 +28,7 @@ jobs:
 
     - name: Push the Docker image
       run: 
-        docker push $DOCKER_IMAGE:$(date +%s) 
         docker push $DOCKER_IMAGE:latest
+    - name: Push the Docker image
+      run: 
+        docker push $DOCKER_IMAGE:$(date +%s)
