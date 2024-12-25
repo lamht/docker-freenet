@@ -14,11 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_IMAGE: 'thanhlam00290/freenet'
+      TAG: $(date +%s)
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
       run: 
-        docker build . --file Dockerfile --tag $DOCKER_IMAGE:$(date +%s) --tag $DOCKER_IMAGE:latest
+        docker build --file Dockerfile -t $DOCKER_IMAGE:$TAG -t $DOCKER_IMAGE:latest .
 
     - name: Log in to Docker Hub
       uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
@@ -31,4 +32,4 @@ jobs:
         docker push $DOCKER_IMAGE:latest
     - name: Push the Docker image
       run: 
-        docker push $DOCKER_IMAGE:$(date +%s)
+        docker push $DOCKER_IMAGE:$TAG
