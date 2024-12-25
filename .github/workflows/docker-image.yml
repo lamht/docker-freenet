@@ -10,7 +10,7 @@ on:
 jobs:
 
   build:
-
+    environment: test
     runs-on: ubuntu-latest
     env:
       DOCKER_IMAGE: 'thanhlam00290/freenet'
