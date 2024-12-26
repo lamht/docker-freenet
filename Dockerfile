@@ -20,7 +20,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 CMD ["/bin/bash", "-c", "service nginx start;/fred/docker-run" ]
 
 # Check every 5 Minutes, if Freenet is still running
-HEALTHCHECK --interval=5m --timeout=3s CMD /fred/run.sh status || exit 1
+#HEALTHCHECK --interval=5m --timeout=3s CMD /fred/run.sh status || exit 1
 
 # We need openssl to download via https and libc-compat for the wrapper
 RUN apt install -y openssl wget
