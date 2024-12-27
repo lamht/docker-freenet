@@ -3,7 +3,7 @@ services:
   freenet:
     container_name: freenet
     image: thanhlam00290/freenet
-    network_mode: "host"
+    #network_mode: "host"
     ports:
       - "127.0.0.1:80:8888"
       - "127.0.0.1:9481:9481"
@@ -16,3 +16,6 @@ services:
     - allowedhosts=127.0.0.1,0:0:0:0:0:0:0:1
     - darknetport=12345
     - opennetport=12346
+    - PUID=1000
+    - PGID=1000
+
