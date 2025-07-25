@@ -10,7 +10,11 @@ ENV allowedhosts=127.0.0.1,0:0:0:0:0:0:0:1 darknetport=12345 opennetport=12346
 EXPOSE 80 9481 ${darknetport}/udp ${opennetport}/udp
 
 #nginx 
-RUN apt update && apt install -y nginx nano net-tools curl openssl wget
+RUN apt update && \
+    apt install -y nginx nano net-tools curl openssl wget && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN mkdir -p /run/nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
