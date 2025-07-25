@@ -12,6 +12,7 @@ EXPOSE 80 9481 ${darknetport}/udp ${opennetport}/udp
 #nginx 
 RUN apt update && apt install -y nginx nano net-tools curl openssl wget
 RUN mkdir -p /run/nginx
+COPY nginx.conf /etc/nginx/nginx.conf
 
 
 # Check every 5 Minutes, if Freenet is still running
@@ -20,9 +21,8 @@ RUN mkdir -p /run/nginx
 # Do not run freenet as root user:
 RUN mkdir -p /conf /data && addgroup --gid 1000 fred && adduser --gid 1000 --home /fred fred && chown fred: /conf /data
 
-COPY nginx.conf /etc/nginx/nginx.conf \
-     ./defaults/freenet.ini /defaults/ \
-     docker-run /fred/
+COPY ./defaults/freenet.ini /defaults/
+COPY docker-run /fred/
 
 USER fred
 WORKDIR /fred
