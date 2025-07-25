@@ -1,14 +1,14 @@
 #!/bin/sh
 
 trapexit() {
-  echo -n "Trapped SIGTERM @" >>/data/logs/term.log
+  echo -n "Trapped TERM @" >>/data/logs/term.log
   date >>/data/logs/term.log
   /fred/run.sh stop >>/data/logs/term.log
   echo "exited: $1" >>/data/logs/term.log
   exit 0
 }
 
-trap 'trapexit' SIGTERM
+trap 'trapexit' TERM
 
 if [ ! -f /conf/freenet.ini ]; then
     cp /defaults/freenet.ini /conf/
@@ -21,9 +21,8 @@ if [ ! -f /data/seednodes.fref  ]; then
     cp /fred/seednodes.fref /data/
 fi
 
-su - fred
 cd /fred
 echo "hello"
 
-su -c './run.sh console' fred &
+./run.sh console &
 wait
