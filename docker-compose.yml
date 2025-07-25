@@ -1,21 +1,18 @@
-version: '2'
 services:
   freenet:
     container_name: freenet
-    image: thanhlam00290/freenet
-    #network_mode: "host"
+    image: thanhlam00290/freenet:latest
     ports:
-      - "127.0.0.1:80:8888"
-      - "127.0.0.1:9481:9481"
+      - "8888:80"
+      - "9999:8888"
       - "12345:12345/udp"
       - "12346:12346/udp"
     volumes:
-      - /conf/freenet:/conf
-      - /data/freenet:/data
+      - ./conf/freenet:/conf
+      - ./data/freenet:/data
     environment:
-    - allowedhosts=127.0.0.1,0:0:0:0:0:0:0:1
-    - darknetport=12345
-    - opennetport=12346
-    - PUID=1000
-    - PGID=1000
-
+      - allowedhosts=127.0.0.1,0:0:0:0:0:0:0:1
+      - darknetport=12345
+      - opennetport=12346
+      - PUID=1000
+      - PGID=1000
