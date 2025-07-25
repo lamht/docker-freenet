@@ -53,6 +53,6 @@ RUN wget -O /tmp/new_installer.jar $(grep url /fred/buildinfo.json |cut -d" " -f
     && cat /fred/buildinfo.json
 
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 USER root
+RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
