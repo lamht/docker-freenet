@@ -1,7 +1,5 @@
 FROM openjdk:17-slim-bullseye
 
-LABEL maintainer="Tobias Vollmer <info+docker@tvollmer.de>"
-
 # Build argument (e.g. "build01478")
 ARG freenet_build
 
@@ -12,26 +10,19 @@ ENV allowedhosts=127.0.0.1,0:0:0:0:0:0:0:1 darknetport=12345 opennetport=12346
 EXPOSE 80 9481 ${darknetport}/udp ${opennetport}/udp
 
 #nginx 
-RUN apt update && apt install -y nginx nano net-tools
+RUN apt update && apt install -y nginx nano net-tools curl openssl wget
 RUN mkdir -p /run/nginx
-COPY nginx.conf /etc/nginx/nginx.conf
 
-# Command to run on start of the container
-CMD ["/bin/bash", "-c", "service nginx start;/fred/docker-run" ]
 
 # Check every 5 Minutes, if Freenet is still running
 #HEALTHCHECK --interval=5m --timeout=3s CMD /fred/run.sh status || exit 1
 
-# We need openssl to download via https and libc-compat for the wrapper
-RUN apt install -y openssl wget
-#libc6-compat && ln -s /lib /lib64
-
-
 # Do not run freenet as root user:
 RUN mkdir -p /conf /data && addgroup --gid 1000 fred && adduser --gid 1000 --home /fred fred && chown fred: /conf /data
 
-COPY ./defaults/freenet.ini /defaults/
-COPY docker-run /fred/
+COPY nginx.conf /etc/nginx/nginx.conf \
+     ./defaults/freenet.ini /defaults/ \
+     docker-run /fred/
 
 USER fred
 WORKDIR /fred
@@ -57,4 +48,7 @@ RUN wget -O /tmp/new_installer.jar $(grep url /fred/buildinfo.json |cut -d" " -f
     && echo "----------------" \
     && cat /fred/buildinfo.json
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 USER root
+ENTRYPOINT ["/entrypoint.sh"]
