@@ -1,3 +1,3 @@
 #!/bin/bash
 service nginx start
-su fred -c "/fred/docker-run"
+exec gosu fred /fred/docker-run

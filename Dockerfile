@@ -11,7 +11,7 @@ EXPOSE 80 9481 ${darknetport}/udp ${opennetport}/udp
 
 #nginx 
 RUN apt update && \
-    apt install -y nginx nano net-tools curl openssl wget && \
+    apt install -y nginx nano net-tools curl openssl wget gosu && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
