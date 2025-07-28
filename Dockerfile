@@ -10,8 +10,13 @@ ENV allowedhosts=127.0.0.1,0:0:0:0:0:0:0:1 darknetport=12345 opennetport=12346
 EXPOSE 80 9481 ${darknetport}/udp ${opennetport}/udp
 
 #nginx 
-RUN apt update && \
-    apt install -y nginx nano net-tools curl openssl wget gosu && \
+RUN apt-get update && \
+    apt-get install -y curl gnupg2 ca-certificates lsb-release && \
+    echo "deb http://nginx.org/packages/debian `lsb_release -cs` nginx" \
+        | tee /etc/apt/sources.list.d/nginx.list && \
+    curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add - && \
+    apt-get update && \
+    apt-get install -y nginx nano net-tools curl openssl wget gosu && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
