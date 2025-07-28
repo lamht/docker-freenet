@@ -37,6 +37,7 @@ RUN chmod +x /entrypoint.sh /fred/docker-run
 WORKDIR /fred
 VOLUME ["/conf", "/data"]
 
+USER fred
 # Get the latest freenet build or use supplied version
 RUN set -e; \
     if [ -n "${freenet_build}" ]; then \
@@ -57,7 +58,7 @@ RUN set -e; \
     echo "----------------"; \
     cat /fred/buildinfo.json
 
-ENV FREENET_VERSION=${build}
+ENV FREENET_VERSION=$build
 
 USER root
 # HEALTHCHECK --interval=5m --timeout=3s CMD /fred/run.sh status || exit 1
