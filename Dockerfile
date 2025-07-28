@@ -43,12 +43,19 @@ RUN build=$(test -n "${freenet_build}" && echo ${freenet_build} \
     && short_build=$(echo ${build}|cut -c7-) \
     && echo -e "build: $build\nurl: https://github.com/freenet/fred/releases/download/$build/new_installer_offline_$short_build.jar" >buildinfo.json \
     && echo "Building:" \
-    && cat buildinfo.json && \
-    wget -O /tmp/new_installer.jar $(grep url buildinfo.json |cut -d" " -f2) \
+    && cat buildinfo.json
+
+ENV FREENET_VERSION=$build
+
+# Download and install freenet in the given version
+RUN wget -O /tmp/new_installer.jar $(grep url /fred/buildinfo.json |cut -d" " -f2) \
     && echo "INSTALL_PATH=/fred/" >/tmp/install_options.conf \
     && java -jar /tmp/new_installer.jar -options /tmp/install_options.conf \
     && sed -i 's#wrapper.app.parameter.1=freenet.ini#wrapper.app.parameter.1=/conf/freenet.ini#' /fred/wrapper.conf \
-    && rm /tmp/new_installer.jar /tmp/install_options.conf
+    && rm /tmp/new_installer.jar /tmp/install_options.conf \
+    && echo "Build successful" \
+    && echo "----------------" \
+    && cat /fred/buildinfo.json
 
 USER root
 # HEALTHCHECK --interval=5m --timeout=3s CMD /fred/run.sh status || exit 1
