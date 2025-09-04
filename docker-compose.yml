@@ -2,7 +2,7 @@ services:
   freenet:
     container_name: freenet
     image: thanhlam00290/freenet:latest
-    restart: always
+    restart: unless-stopped
     ports:
       - "8888:80"
       - "9999:8888"
