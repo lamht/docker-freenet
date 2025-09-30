@@ -11,10 +11,29 @@ trapexit() {
 trap 'trapexit' TERM
 
 if [ ! -f /conf/freenet.ini ]; then
+    echo "File /conf/freenet.ini does not exist. Copying from /defaults/freenet.ini..."
+    
+    # Copy the default configuration to /conf/
     cp /defaults/freenet.ini /conf/
+    
+    echo "File copied to /conf/freenet.ini."
+
+    # Replace ALLOWEDHOSTS with the value from the environment variable
+    echo "Replacing ALLOWEDHOSTS with $allowedhosts in /conf/freenet.ini..."
     sed -i "s#ALLOWEDHOSTS#$allowedhosts#" /conf/freenet.ini
+    echo "ALLOWEDHOSTS replaced with $allowedhosts."
+    
+    # Replace DARKNETPORT with the value from the environment variable
+    echo "Replacing DARKNETPORT with $darknetport in /conf/freenet.ini..."
     sed -i "s#DARKNETPORT#$darknetport#" /conf/freenet.ini
+    echo "DARKNETPORT replaced with $darknetport."
+    
+    # Replace OPENNETPORT with the value from the environment variable
+    echo "Replacing OPENNETPORT with $opennetport in /conf/freenet.ini..."
     sed -i "s#OPENNETPORT#$opennetport#" /conf/freenet.ini
+    echo "OPENNETPORT replaced with $opennetport."
+else
+    echo "File /conf/freenet.ini already exists. No changes made."
 fi
 
 if [ ! -f /data/seednodes.fref  ]; then
