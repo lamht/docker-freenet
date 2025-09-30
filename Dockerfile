@@ -52,7 +52,9 @@ RUN set -e; \
     wget -O /tmp/new_installer.jar "https://github.com/freenet/fred/releases/download/$build/new_installer_offline_$short_build.jar"; \
     echo "INSTALL_PATH=/fred/" > /tmp/install_options.conf; \
     java -jar /tmp/new_installer.jar -options /tmp/install_options.conf; \
-    sed -i 's#wrapper.app.parameter.1=freenet.ini#wrapper.app.parameter.1=/conf/freenet.ini#' /fred/wrapper.conf; \
+    sed -i 's/DARKNETPORT/'"$darknetport"'/g' /defaults/freenet.ini; \
+    sed -i 's/OPENNETPORT/'"$opennetport"'/g' /defaults/freenet.ini; \
+    sed -i 's#wrapper.app.parameter.1=freenet.ini#wrapper.app.parameter.1=/defaults/freenet.ini#' /fred/wrapper.conf; \
     rm /tmp/new_installer.jar /tmp/install_options.conf; \
     echo "Build successful"; \
     echo "----------------"; \
