@@ -9,8 +9,9 @@ services:
       - "12345:12345/udp"
       - "12346:12346/udp"
     volumes:
-      - ./conf/freenet:/conf
-      - ./data/freenet:/data
+      - ./conf:/conf
+      - ./data:/data
+      - ./download:/download
     environment:
       - allowedhosts=127.0.0.1,0:0:0:0:0:0:0:1
       - darknetport=12345
