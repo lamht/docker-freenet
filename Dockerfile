@@ -21,10 +21,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Prepare directories and user
-RUN mkdir -p /run/nginx /conf /data /fred && \
+RUN mkdir -p /run/nginx /conf /data /download /fred && \
     addgroup --gid 1000 fred && \
     adduser --disabled-password --gecos "" --uid 1000 --gid 1000 --home /fred fred && \
-    chown -R fred:fred /conf /data /fred
+    chown -R fred:fred /conf /data /download /fred
 
 # Copy configs and scripts
 COPY nginx.conf /etc/nginx/nginx.conf
@@ -35,7 +35,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh /fred/docker-run
 
 WORKDIR /fred
-VOLUME ["/conf", "/data"]
+VOLUME ["/conf", "/data", "/download"]
 
 USER fred
 # Get the latest freenet build or use supplied version
