@@ -1,4 +1,4 @@
-FROM openjdk:17-slim-bullseye
+FROM openjdk:17-slim
 
 ARG freenet_build
 
