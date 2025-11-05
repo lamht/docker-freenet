@@ -37,7 +37,7 @@ RUN chmod +x /entrypoint.sh /fred/docker-run
 WORKDIR /fred
 VOLUME ["/conf", "/data", "/download"]
 
-USER fred
+USER 1000
 # Get the latest freenet build or use supplied version
 RUN set -e; \
     if [ -n "${freenet_build}" ]; then \
