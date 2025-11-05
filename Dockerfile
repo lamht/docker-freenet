@@ -12,7 +12,7 @@ EXPOSE 80 9481 ${darknetport}/udp ${opennetport}/udp
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         curl gnupg2 ca-certificates lsb-release nano net-tools openssl wget gosu && \
-    echo "deb http://nginx.org/packages/debian $(lsb_release -cs) nginx" \
+    echo "deb http://nginx.org/packages/ubuntu jammy nginx" \
         > /etc/apt/sources.list.d/nginx.list && \
     curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add - && \
     apt-get update && \
