@@ -22,9 +22,9 @@ RUN apt-get update && \
 
 # Prepare directories and user
 RUN mkdir -p /run/nginx /conf /data /download /fred && \
-    addgroup --gid 1000 fred && \
-    adduser --disabled-password --gecos "" --uid 1000 --gid 1000 --home /fred fred && \
-    chown -R fred:fred /conf /data /download /fred
+    addgroup --gid 1000 fred || true && \
+    adduser --disabled-password --gecos "" --uid 1000 --gid 1000 --home /fred fred || true && \
+    chown -R 1000:1000 /conf /data /download /fred
 
 # Copy configs and scripts
 COPY nginx.conf /etc/nginx/nginx.conf
