@@ -1,4 +1,4 @@
-FROM openjdk:17-slim
+FROM openjdk:17-jdk-slim
 
 ARG freenet_build
 
